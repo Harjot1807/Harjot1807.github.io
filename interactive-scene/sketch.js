@@ -55,7 +55,7 @@ function displayMenu() {
 }
 
 function displayEasy(){
-  
+  keyPressed();
 }
 
 function displayMedium(){
@@ -78,5 +78,12 @@ function whichDisplay() {
   }
   if (state === "hard") {
     displayHard();
+  }
+}
+
+function keyPressed() {
+  if (keyCode === ESCAPE){
+    state = "menu";
+    return state;
   }
 }
