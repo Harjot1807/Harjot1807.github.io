@@ -59,11 +59,11 @@ function displayEasy(){
 }
 
 function displayMedium(){
-  
+  keyPressed();
 }
 
 function displayHard(){
-  
+  keyPressed();
 }
 
 function whichDisplay() {
