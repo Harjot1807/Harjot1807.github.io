@@ -7,6 +7,9 @@
 
 
 let state = "menu";
+let numberGuess;
+let gameInitialized = false;
+let correctAnswer = false;
 
 function setup() {
   createCanvas(480, 480);
@@ -32,38 +35,61 @@ function displayMenu() {
   //add difficulty text
 
   rect(width / 4, height * 9 / 24, width / 2, height / 4);
-  text("Medium", width / 2, height / 2);
+  text("Hard", width / 2, height / 2);
   if (mouseIsPressed &&
       mouseX > width/4 &&
       mouseY > height*9/24 &&
       mouseX < width*3/4 &&
       mouseY < height*5/8) {
-    state = "medium";
+    state = "hard";
   }
   //add difficulty text
 
   rect(width / 4, height * 16 / 24, width / 2, height / 4);
-  text("Hard", width / 2, height * 19 / 24);
+  text("Custom", width / 2, height * 19 / 24);
   if (mouseIsPressed &&
       mouseX > width/4 &&
       mouseY > height*2/3 &&
       mouseX < width*3/4 &&
       mouseY < height*11/12) {
-    state = "hard";
+    state = "custom";
   }
   //add difficulty text
 }
 
 function displayEasy(){
-  keyPressed();
+  let userGuess;
+  let numericalGuess;
+
+  if (!gameInitialized) {
+    numberGuess = random(0, 100);
+    gameInitialized = true;
+  }
+  
+  userGuess = prompt("What is your number?");
+  numericalGuess = Number(userGuess);
+  while (isNaN(numericalGuess) || userguess === "") {
+    userGuess = prompt("Please input just a number");
+    numericalGuess = Number(userGuess);
+  }
+
+  while (numericalGuess !== numberGuess) {
+    alert("You have the correct number");
+    state = "menu";
+  gameInitialized = false;
+  }
+   
+  else
+
+
 }
 
-function displayMedium(){
-  keyPressed();
+function displayCustom(){
+  
 }
 
 function displayHard(){
-  keyPressed();
+  
 }
 
 function whichDisplay() {
@@ -73,8 +99,8 @@ function whichDisplay() {
   if (state === "easy") {
     displayEasy();
   }
-  if (state === "medium") {
-    displayMedium();
+  if (state === "custom") {
+    displayCustom();
   }
   if (state === "hard") {
     displayHard();
