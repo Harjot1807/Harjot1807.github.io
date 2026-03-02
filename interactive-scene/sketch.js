@@ -9,10 +9,12 @@
 let state = "menu";
 let numberGuess;
 let gameInitialized = false;
-let correctAnswer = false;
+let userGuess;
+let numericalGuess;
+
 
 function setup() {
-  createCanvas(480, 480);
+  createCanvas(windowWidth, windowHeight);
 }
 
 function draw() {
@@ -58,30 +60,43 @@ function displayMenu() {
 }
 
 function displayEasy(){
-  let userGuess;
-  let numericalGuess;
-
   if (!gameInitialized) {
-    numberGuess = random(0, 100);
+    numberGuess = random(0, 101);
+    numberGuess = floor(numberGuess);
+    console.log(numberGuess);
     gameInitialized = true;
   }
   
   userGuess = prompt("What is your number?");
   numericalGuess = Number(userGuess);
-  while (isNaN(numericalGuess) || userguess === "") {
+  while (isNaN(numericalGuess) || userGuess === "") {
     userGuess = prompt("Please input just a number");
     numericalGuess = Number(userGuess);
   }
-
+  
   while (numericalGuess !== numberGuess) {
-    alert("You have the correct number");
-    state = "menu";
-  gameInitialized = false;
+    if (numericalGuess > numberGuess){
+      userGuess = prompt("Your number is too high; pick another number");
+      numericalGuess = Number(userGuess);
+      while (isNaN(numericalGuess) || userGuess === "") {
+        userGuess = prompt("Please input just a number");
+        numericalGuess = Number(userGuess);
+      }
+    }
+    if (numericalGuess < numberGuess){
+      userGuess = prompt("Your number is too low; pick another number");
+      numericalGuess = Number(userGuess);
+      while (isNaN(numericalGuess) || userGuess === "") {
+        userGuess = prompt("Please input just a number");
+        numericalGuess = Number(userGuess);
+      }
+    }
   }
-   
-  else
 
-
+  if (numericalGuess === numberGuess){
+    gameInitialized = false;
+    alert("Congratulations, you got the number!! Press ESCAPE to return to the menu");
+  }
 }
 
 function displayCustom(){
@@ -89,8 +104,45 @@ function displayCustom(){
 }
 
 function displayHard(){
+  if (!gameInitialized) {
+    numberGuess = random(0, 1001);
+    numberGuess = floor(numberGuess);
+    console.log(numberGuess);
+    gameInitialized = true;
+  }
   
+  userGuess = prompt("What is your number?");
+  numericalGuess = Number(userGuess);
+  while (isNaN(numericalGuess) || userGuess === "") {
+    userGuess = prompt("Please input just a number");
+    numericalGuess = Number(userGuess);
+  }
+  
+  while (numericalGuess !== numberGuess) {
+    if (numericalGuess > numberGuess){
+      userGuess = prompt("Your number is too high; pick another number");
+      numericalGuess = Number(userGuess);
+      while (isNaN(numericalGuess) || userGuess === "") {
+        userGuess = prompt("Please input just a number");
+        numericalGuess = Number(userGuess);
+      }
+    }
+    if (numericalGuess < numberGuess){
+      userGuess = prompt("Your number is too low; pick another number");
+      numericalGuess = Number(userGuess);
+      while (isNaN(numericalGuess) || userGuess === "") {
+        userGuess = prompt("Please input just a number");
+        numericalGuess = Number(userGuess);
+      }
+    }
+  }
+
+  if (numericalGuess === numberGuess){
+    gameInitialized = false;
+    alert("Congratulations, you got the number!! Press ESCAPE to return to the menu");
+  }
 }
+
 
 function whichDisplay() {
   if (state === "menu") {
@@ -109,6 +161,7 @@ function whichDisplay() {
 
 function keyPressed() {
   if (keyCode === ESCAPE){
+    gameInitialized = false;
     state = "menu";
     return state;
   }
