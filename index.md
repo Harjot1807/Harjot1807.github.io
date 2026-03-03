@@ -4,6 +4,7 @@
 - [Moving square](01-first-day)
 - [Scope] (scope)
 - [Images] (images)
+- [Ball Array] (ball array)
 
 ## Assignments
 - [Interactive Scene](interactive-scene)
