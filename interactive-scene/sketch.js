@@ -4,7 +4,7 @@
 //
 // Extra for Experts:
 // used strings
-// 
+// explored window resizing
 
 // set variables that will be used later
 let state = "menu";
@@ -91,16 +91,16 @@ function displayEasy(){
    
   // text which will give feedback to the user
   textAlign(CENTER, CENTER);
-  textSize(50);
+  textSize((height/20));
   text(feedback, width/2, height/3);
 
   // text that shows what the user has typed
-  textSize(50);
+  textSize((height/20));
   fill(0);
   text(userGuess, width / 2, height/2);
 
   // text that reminds the user they can go back to the menu whenever they want
-  textSize(15);
+  textSize((height/30));
   text("Press ESCAPE to return to menu", width/2, height*11/12)
 }
 
@@ -123,16 +123,16 @@ function displayHard(){
  
   //displays the feedback to the user (feedback is made in the last function)
   textAlign(CENTER, CENTER);
-  textSize(50);
+  textSize(height/20);
   text(feedback, width/2, height/3);
 
   //displays what the user has written till now
-  textSize(50);
+  textSize(height/20);
   fill(0);
   text(userGuess, width / 2, height/2);
 
   // reminds the user they can exit back to the menu
-  textSize(15);
+  textSize(height/30);
   text("Press ESCAPE to return to menu", width/2, height*11/12)
 }
 
@@ -208,6 +208,7 @@ function keyPressed() {
   }
 }
 
+//changes the window size if they resize their window
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
