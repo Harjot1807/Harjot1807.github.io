@@ -29,7 +29,7 @@ function draw() {
 function displayMenu() {
 
   // resetting the feedback everytime we go to the menu we don't show this tho
-  feedback = "Type a number and press ENTER"
+  feedback = "Type a number and press ENTER";
 
   //making a box with the text easy
   fill(255);
@@ -91,24 +91,24 @@ function displayEasy(){
    
   // text which will give feedback to the user
   textAlign(CENTER, CENTER);
-  textSize((height/20));
+  textSize(height/20);
   text(feedback, width/2, height/3);
 
   // text that shows what the user has typed
-  textSize((height/20));
+  textSize(height/20);
   fill(0);
   text(userGuess, width / 2, height/2);
 
   // text that reminds the user they can go back to the menu whenever they want
-  textSize((height/30));
-  text("Press ESCAPE to return to menu", width/2, height*11/12)
+  textSize(height/30);
+  text("Press ESCAPE to return to menu", width/2, height*11/12);
 }
 
 //if the state is custom
 // my plan was that the user can choose the upper and lower limit they want it to randomize from
 // if I ever get time I will do this, track is killing me
 function displayCustom(){
-  text("Coming soon", width/2, height/2)
+  text("Coming soon", width/2, height/2);
 }
 
 // if the state is hard
@@ -133,7 +133,7 @@ function displayHard(){
 
   // reminds the user they can exit back to the menu
   textSize(height/30);
-  text("Press ESCAPE to return to menu", width/2, height*11/12)
+  text("Press ESCAPE to return to menu", width/2, height*11/12);
 }
 
 //function that checks the state to see which menu to display
@@ -175,7 +175,7 @@ function keyPressed() {
 
     //if the user presses backspace, it deletes their last digit
     else if (keyCode === BACKSPACE) {
-      userGuess = userGuess.substring(0, userGuess.length - 1)
+      userGuess = userGuess.substring(0, userGuess.length - 1);
     }
 
     // if the user presses enter it checks their guess
@@ -189,17 +189,17 @@ function keyPressed() {
 
       //if the number is too high
       else if (numericalGuess > numberGuess) {
-        feedback = "Your number is too high"
+        feedback = "Your number is too high";
       }
 
       //if the number is too low
       else if (numericalGuess < numberGuess) {
-        feedback = "Your number is too low"
+        feedback = "Your number is too low";
       }
 
       //they got the number
       else {
-        feedback = "Congratulatons, you got the correct number!!"
+        feedback = "Congratulatons, you got the correct number!!";
       }
 
       //resets their guess
