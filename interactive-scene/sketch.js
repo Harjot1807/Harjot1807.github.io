@@ -199,7 +199,7 @@ function keyPressed() {
 
       //they got the number
       else {
-        feedback = "Congratulatons, you got the correct number!!";
+        feedback = "Congratulations, you got the correct number!!";
       }
 
       //resets their guess
