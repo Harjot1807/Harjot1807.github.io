@@ -15,16 +15,16 @@ function draw() {
     ball.y += ball.dy;
     
     //teleport
-    if ((ball.x - ball.radius) > width){
+    if (ball.x - ball.radius > width){
       ball.x = -ball.radius;
     }
-    if ((ball.x + ball.radius) < 0){
+    if (ball.x + ball.radius < 0){
       ball.x = width+ball.radius;
     }
-    if ((ball.y - ball.radius) > height){
+    if (ball.y - ball.radius > height){
       ball.y = 0-ball.radius;
     }
-    if ((ball.y + ball.radius) < 0){
+    if (all.y + ball.radius < 0){
       ball.y = height+ball.radius;
     }
 
