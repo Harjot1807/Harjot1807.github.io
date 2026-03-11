@@ -14,7 +14,7 @@ let balance = 500;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  drawGrid();
+  makeArray();
 }
 
 function draw() {
@@ -38,8 +38,8 @@ function trackMoney() {
   if (mousePressed) { }
 }
 
-//making the grid with actual symbols
-function drawGrid() {
+//making the coding grid- decides which of the 25 squares will be mines
+function makeArray() {
   grid = [];
   gameOver = false;
 
