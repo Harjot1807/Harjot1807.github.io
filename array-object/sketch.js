@@ -10,7 +10,14 @@ let no_of_mines = 3;
 let grid = [];
 let gameOver = false;
 let balance = 500;
+let mineArray = [];
+let gem; 
+let cross; 
 
+function preload(){
+  gem = loadImage('gemsquare.jpg');
+  cross = loadImage('cross.jpg');
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -20,6 +27,7 @@ function setup() {
 function draw() {
   background(220);
   drawField();
+  mineValues();
 }
 
 //draws the basic 5x5 grid (the lines)
@@ -63,13 +71,17 @@ function makeArray() {
   }
 }
 
-function displayStuff(){
+function mineValues(){
   for (let row = 0; row <= 4; row++){
     for (let column = 0; column <= 4; column++){
-      if (grid[(row*5)+column].isMine === true){
-        console.log(row);
-        console.log(column);
+      if (grid[row*5+column].isMine === true){
+
+        image(cross, width *(column+1)/10 ,height*(row+1)/10 , cross.width/2 , cross.height/2 );
+      }
+      else {
+        image(gem, width *(column+1)/10 ,height*(row+1)/10 , cross.width/2 , cross.height/2 );
       }
     }
   }
 }
+
