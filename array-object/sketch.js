@@ -21,6 +21,7 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  imageMode(CENTER);
   makeArray();
 }
 
@@ -72,16 +73,33 @@ function makeArray() {
 }
 
 function mineValues(){
+let cellWidth = width/5
+let cellHeight = height/5
+
   for (let row = 0; row <= 4; row++){
     for (let column = 0; column <= 4; column++){
-      if (grid[row*5+column].isMine === true){
+      let indexValue = row * 5 + column;
 
-        image(cross, width *(column+1)/10 ,height*(row+1)/10 , cross.width/2 , cross.height/2 );
+      if (grid[indexValue].revealed){
+      let x = (column + 0.5) * cellWidth;
+      let y = (row + 0.5) * cellHeight;
+
+      if (grid[row*5+column].isMine){
+        image(cross, x ,y , cellWidth * 7/10 , cellHeight * 7/10 );
       }
       else {
-        image(gem, width *(column+1)/10 ,height*(row+1)/10 , cross.width/2 , cross.height/2 );
+        image(gem, x ,y , cellWidth * 7/10 , cellHeight * 7/10 );
       }
     }
+    }
   }
+}
+
+function mousePressed(){
+  let columnValue = Math.floor(mouseX/ (width/5));
+  let rowValue = Math.floor(mouseY / (height/ 5));
+
+  let cellClicked = rowValue * 5 + columnValue;
+  grid[cellClicked].revealed = true;
 }
 
