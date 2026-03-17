@@ -5,20 +5,23 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+//makes the variables and arrays required for the entire code
 const GRIDSIZE = 25;
 let no_of_mines = 3;
 let grid = [];
 let gameOver = false;
-let balance = 500;
 let mineArray = [];
 let gem;
 let cross;
+let gemCounter = 0;
 
+//this function preloads the images of the gems and mines
 function preload() {
   gem = loadImage('gemsquare.jpg');
   cross = loadImage('cross.jpg');
 }
 
+//this function sets up the 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   imageMode(CENTER);
@@ -42,11 +45,6 @@ function drawField() {
   }
 }
 
-//function that will track the money based on the box clicked
-function trackMoney() {
-  let money = 500;
-  if (mousePressed) { }
-}
 
 //making the coding grid- decides which of the 25 squares will be mines
 function makeArray() {
@@ -98,6 +96,7 @@ function mineValues() {
 }
 
 function mousePressed() {
+  gemCounter += 1;
   let columnValue = Math.floor(mouseX / (width / 5));
   let rowValue = Math.floor(mouseY / (height / 5));
 
@@ -106,16 +105,25 @@ function mousePressed() {
   if (grid[cellClicked].revealed === true && grid[cellClicked].isMine === true) {
     gameOver = true;
   }
+
 }
 
 function drawPopup() {
   if (gameOver) {
     fill(0);
     rectMode(CENTER);
-    rect(width / 2, height / 2, width / 2, height / 2);
-    fill("white");
     textSize((width+height)/90);
     textAlign(CENTER, CENTER);
+   
+    rect(width / 2, height / 2, width / 2, height / 2);
+
+    fill("white");
+    rect(width/2,  height * 11/20, width / 4, height / 7);
     text(`Your odds of winning are 1/2300\nThis is why gambling almost always makes you lose money.\nIf you want you can keep trying.`, width/2, height/2 - height/8);
+    fill("black");
+    text(`Start Again? \nPress F5`, width/2, height *11/20);
+
+    
+    
   }
 }
