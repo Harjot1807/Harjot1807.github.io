@@ -121,16 +121,16 @@ function mineValues() {
 function mousePressed() {
 
   //it will onlyallow mouse inputs if the game is neither won nor over
-  if (!gameOver && !gameWon){
+  if (!gameOver && !gameWon) {
 
     //sets up important variables
     let columnValue = Math.floor(mouseX / (width / 5));
     let rowValue = Math.floor(mouseY / (height / 5));
     let cellClicked = rowValue * 5 + columnValue;
-    
+
     //when the square is pressed, it checks if it was previously revealed, to make sure users can't cheat by pressing the same thing 22 times.
     if (!grid[cellClicked].revealed) {
-    grid[cellClicked].revealed = true;
+      grid[cellClicked].revealed = true;
 
       //if the revealed section is a mine, game is over
       if (grid[cellClicked].isMine === true) {
@@ -140,13 +140,13 @@ function mousePressed() {
 
       //the revealed section is a gem, we will add to a counter
       else {
-      let gemCounter = 0;
-        for (let i = 0; i < grid.length; i++){
-          if (grid[i].revealed && !grid[i].isMine){
-            gemCounter ++;
+        let gemCounter = 0;
+        for (let i = 0; i < grid.length; i++) {
+          if (grid[i].revealed && !grid[i].isMine) {
+            gemCounter++;
           }
         }
-        
+
         //when the counter hits 22, all gems have been revealed which means game is won.
         if (gemCounter === 22) {
           gameWon = true;
@@ -163,26 +163,26 @@ function drawPopup() {
     //draws the base rectangle and sets everything to follow for center, including text
     fill(0);
     rectMode(CENTER);
-    textSize((width+height)/90);
-    textAlign(CENTER, CENTER);   
+    textSize((width + height) / 90);
+    textAlign(CENTER, CENTER);
     rect(width / 2, height / 2, width / 2, height / 2);
 
     //sets the text, that will either choose winning or losing text
     fill("white");
 
     //if they lost the game, tells their odds
-    if (gameOver){
-      text(`Your odds of winning are 1/2300\nThis is why gambling almost always makes you lose money.\nIf you want you can keep trying.`, width/2, height/2 - height/8);
+    if (gameOver) {
+      text(`Your odds of winning are 1/2300\nThis is why gambling almost always makes you lose money.\nIf you want you can keep trying.`, width / 2, height / 2 - height / 8);
     }
 
     //if they beat the game, tells their odds and congratulates them
     else if (gameWon) {
-      text(`Nice\nYou found all 22 gems.\nYou beat the 1/2300 odds` , width/2, height/2 - height/8);
+      text(`Nice\nYou found all 22 gems.\nYou beat the 1/2300 odds`, width / 2, height / 2 - height / 8);
     }
 
     //draws the base and asks the user if they want to play again
-    rect(width/2,  height * 11/20, width / 4, height / 7);
+    rect(width / 2, height * 11 / 20, width / 4, height / 7);
     fill("black");
-    text(`Start Again? \nPress F5`, width/2, height *11/20);   
+    text(`Start Again? \nPress F5`, width / 2, height * 11 / 20);
   }
 }
