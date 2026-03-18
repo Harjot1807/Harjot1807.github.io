@@ -7,6 +7,7 @@
 - [Ball Array](ball-array)
 - [Generative Art](art)
 - [perlin nouse](perlin)
+- [Grid 2D](grid)
 
 ## Assignments
 - [Interactive Scene](interactive-scene)
