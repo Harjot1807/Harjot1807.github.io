@@ -1,11 +1,7 @@
 // Grid Demo
 //learning 2d arrays
 
-let theGrid = [[0, 0, 1, 0],
-               [1, 0, 1, 0],
-               [0, 1, 1, 0],
-               [0, 1, 0, 1]];
-const SQUARE_DIMENSIONS = theGrid.length;
+//
 
 let cellSize;
 
