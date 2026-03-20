@@ -1,19 +1,22 @@
-// Project Title
-// Your Name
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// Grid Demo
+//learning 2d arrays
 
-let theGrid = [[1, 0, 0, 0],
-[1, 0, 1, 0],
-[0, 1, 0, 0],
-[0, 0, 1, 1]];
+let theGrid = [[0, 0, 1, 0],
+               [1, 0, 1, 0],
+               [0, 1, 1, 0],
+               [0, 1, 0, 1]];
+const SQUARE_DIMENSIONS = theGrid.length;
 
-const SQUARE_DIMEN = theGrid.length;
+let cellSize;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  if (width < height) {
+    cellSize = width / SQUARE_DIMENSIONS;
+  }
+  else {
+    cellSize = height / SQUARE_DIMENSIONS;
+  }
 }
 
 function draw() {
@@ -21,16 +24,33 @@ function draw() {
   showGrid();
 }
 
-function showGrid(){
-  for (let y = 0; y < SQUARE_DIMEN; y++){
-    for (let x = 0; x < SQUARE_DIMEN; x++){
-      if (theGrid[y][x] === 1){
+function showGrid() {
+  for (let y = 0; y < SQUARE_DIMENSIONS; y++) {
+    for (let x = 0; x < SQUARE_DIMENSIONS; x++) {
+      if (theGrid[y][x] === 1) {
         fill("black");
       }
-      else if (theGrid[y][x] === 0){
+      if (theGrid[y][x] === 0) {
         fill("white");
       }
-      rect(x*(width/SQUARE_DIMEN), y*(width/SQUARE_DIMEN), width/SQUARE_DIMEN, height/SQUARE_DIMEN);
+      square(x * cellSize, y * cellSize, cellSize);
     }
+  }
+}
+
+function mousePressed(){
+  let x = Math.floor(mouseX/cellSize);
+  let y = Math.floor(mouseY/cellSize);
+
+  toggleCell(x,y);
+}
+
+function toggleCell(){
+  if (theGrid[y][x] === 1){
+    theGrid[y][x] = 0;
+  }
+
+  if (theGrid[y][x] === 0){
+    theGrid[y][x] = 1;
   }
 }
