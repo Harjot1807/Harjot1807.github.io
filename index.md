@@ -9,6 +9,7 @@
 - [perlin nouse](perlin)
 - [Grid 2D](grid)
 -[Rect Grid](r-grid)
+-[game of life](gamelife)
 
 ## Assignments
 - [Interactive Scene](interactive-scene)
