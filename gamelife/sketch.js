@@ -3,12 +3,17 @@
 
 const CELL_SIZE = 20;
 const RENDER_ON_FRAME_MULTIPLE = 3;
+const DEAD_CELL = 0;
+const LIVE_CELL = 1;
 let autoPlayIsOn = false;
 let rows;
 let cols;
 let grid;
-const LIVE_CELL = 1;
-const DEAD_CELL = 1;
+let gosper;
+
+function preload() {
+  gosper = loadJSON("gosper.json");
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -46,6 +51,9 @@ function keyPressed() {
   else if (key === "a") {
     autoPlayIsOn = !autoPlayIsOn;
   }
+  else if (key === "g") {
+    grid = gosper;
+  }
 }
 
 function takeTurn() {
@@ -69,7 +77,7 @@ function takeTurn() {
       neighbours -= grid[y][x];
 
       //apply the rules
-      if (grid[y][x] === 1) {
+      if (grid[y][x] === LIVE_CELL) {
         //currently alive
         if (neighbours === 2 || neighbours === 3) {
           nextTurn[y][x] = LIVE_CELL;
