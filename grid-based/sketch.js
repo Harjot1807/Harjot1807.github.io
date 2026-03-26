@@ -15,7 +15,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 }
 
-function preload(){
+function preload() {
 
 }
 
@@ -25,83 +25,13 @@ function draw() {
   whichDisplay();
 }
 
-function whichDisplay() {
-
-  //changes the state to the exact menu
-  if (state === "menu") {
-    displayMenu();
-  }
-  if (state === "easy") {
-    displayEasy();
-  }
-  if (state === "custom") {
-    displayCustom();
-  }
-  if (state === "hard") {
-    displayHard();
-  }
-}
-
-function displayMenu() {
-
-  // resetting the feedback everytime we go to the menu we don't show this tho
-  feedback = "Type a number and press ENTER";
-
-  //making a box with the text easy
-  fill(255);
-  rect(width / 4, height / 12, width / 2, height / 4);
-  textSize((height+width)/20);
-  textAlign(CENTER, CENTER);
-  fill(0);
-  text("Easy", width / 2, height * 5 / 24);
-
-  //making it change state into easy if the easy box is pressed
-  if (mouseIsPressed &&
-      mouseX > width/4 &&
-      mouseY > height/12 &&
-      mouseX < width*3/4 &&
-      mouseY < height/3) {
-    state = "easy";
-  }
-
-  //making the medium mode box and giving it text
-  fill(255);
-  rect(width / 4, height * 9 / 24, width / 2, height / 4);
-  fill(0);
-  text("Medium", width / 2, height / 2);
-
-  // making it change state into medium if the medium box is pressed
-  if (mouseIsPressed &&
-      mouseX > width/4 &&
-      mouseY > height*9/24 &&
-      mouseX < width*3/4 &&
-      mouseY < height*5/8) {
-    state = "medium";
-  }
-
-  //making the hard mode box and giving it text
-  fill(255);
-  rect(width / 4, height * 16 / 24, width / 2, height / 4);
-  fill(0);
-  text("Hard", width / 2, height * 19 / 24);
-
-  // making it change state into hard if the hard box is pressed
-  if (mouseIsPressed &&
-      mouseX > width/4 &&
-      mouseY > height*2/3 &&
-      mouseX < width*3/4 &&
-      mouseY < height*11/12) {
-    state = "hard";
-  }
-}
-
 function revealAll() {
-  
+
 }
 
 function mousePressed() {
-  let x = Math.floor(mouseX/cellSize);
-  let y = Math.floor(mouseY/cellSize);
+  let x = Math.floor(mouseX / cellSize);
+  let y = Math.floor(mouseY / cellSize);
 
   //self
   toggleTile(x, y);
@@ -121,8 +51,140 @@ function generateEmptyGrid(cols, rows) {
   for (let y = 0; y < rows; y++) {
     newGrid.push([]);
     for (let x = 0; x < cols; x++) {
-      newGrid[y].push(DEAD_CELL);
+      newGrid[y].push(0);
     }
   }
   return newGrid;
 }
+
+function displayGrid(rows, cols) {
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      if (grid[x][y] === 0) {
+        fill("white");
+        square(x * cellSize, y * cellSize, cellSize);
+      }
+    }
+  }
+}
+
+function chooseCorrectPath(rows, cols) {
+
+}
+
+function checkCellSize(cellSizeWidth, cellSizeHeight){
+  if (cellSizeWidth < cellSizeHeight) {
+    cellSize = cellSizeWidth;
+  }
+  else {
+    cellSize = cellSizeHeight;
+  }
+}
+
+function displayEasy() {
+  let rows = 4;
+  let cols = 6;
+  let cellSizeWidth = width/cols;
+  let cellSizeHeight = height/rows;
+  checkCellSize(cellSizeWidth, cellSizeHeight);
+  
+  grid = generateEmptyGrid(rows, cols + 2);
+  chooseCorrectPath(rows, cols);
+  displayGrid(rows, cols);
+}
+
+function displayMedium() {
+  let rows = 5;
+  let cols = 10;
+  cellSize = width/cols;
+  let cellSizeWidth = width/cols;
+  let cellSizeHeight = height/rows;
+  checkCellSize(cellSizeWidth, cellSizeHeight);
+  grid = generateEmptyGrid(rows, cols+2);
+  chooseCorrectPath(rows, cols);
+  displayGrid(rows, cols);
+}
+
+function displayHard() {
+  let rows = 7;
+  let cols = 15;
+  cellSize = width/cols;
+  let cellSizeWidth = width/cols;
+  let cellSizeHeight = height/rows;
+  checkCellSize(cellSizeWidth, cellSizeHeight);
+  grid = generateEmptyGrid(rows, cols+2);
+  chooseCorrectPath(rows, cols);
+  displayGrid(rows, cols);
+}
+
+
+function whichDisplay() {
+
+  //changes the state to the exact menu
+  if (state === "menu") {
+    displayMenu();
+  }
+  if (state === "easy") {
+    displayEasy();
+  }
+  if (state === "medium") {
+    displayMedium();
+  }
+  if (state === "hard") {
+    displayHard();
+  }
+}
+
+function displayMenu() {
+
+  // resetting the feedback everytime we go to the menu we don't show this tho
+  feedback = "Type a number and press ENTER";
+
+  //making a box with the text easy
+  fill(255);
+  rect(width / 4, height / 12, width / 2, height / 4);
+  textSize((height + width) / 20);
+  textAlign(CENTER, CENTER);
+  fill(0);
+  text("Easy", width / 2, height * 5 / 24);
+
+  //making it change state into easy if the easy box is pressed
+  if (mouseIsPressed &&
+    mouseX > width / 4 &&
+    mouseY > height / 12 &&
+    mouseX < width * 3 / 4 &&
+    mouseY < height / 3) {
+    state = "easy";
+  }
+
+  //making the medium mode box and giving it text
+  fill(255);
+  rect(width / 4, height * 9 / 24, width / 2, height / 4);
+  fill(0);
+  text("Medium", width / 2, height / 2);
+
+  // making it change state into medium if the medium box is pressed
+  if (mouseIsPressed &&
+    mouseX > width / 4 &&
+    mouseY > height * 9 / 24 &&
+    mouseX < width * 3 / 4 &&
+    mouseY < height * 5 / 8) {
+    state = "medium";
+  }
+
+  //making the hard mode box and giving it text
+  fill(255);
+  rect(width / 4, height * 16 / 24, width / 2, height / 4);
+  fill(0);
+  text("Hard", width / 2, height * 19 / 24);
+
+  // making it change state into hard if the hard box is pressed
+  if (mouseIsPressed &&
+    mouseX > width / 4 &&
+    mouseY > height * 2 / 3 &&
+    mouseX < width * 3 / 4 &&
+    mouseY < height * 11 / 12) {
+    state = "hard";
+  }
+}
+
