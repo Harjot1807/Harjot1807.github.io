@@ -10,13 +10,16 @@ let rows;
 let cols;
 let grid;
 let state = "menu";
+let startFinishLine;
+let glass;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 }
 
 function preload() {
-
+  startFinishLine = loadImage("line.png");
+  glass = loadImage("Transparent.png");
 }
 
 
@@ -40,8 +43,8 @@ function mousePressed() {
 function toggleTile(x, y) {
   //make sure the tile you're toggling is in the grid
   if (x >= 0 && x < cols && y >= 0 && y < rows) {
-    if (grid[y][x].revealed === false) {
-      grid[y][x].revealed = true;
+    if (grid[x][y].revealed === false) {
+      grid[x][y].revealed = true;
     }
   }
 }
@@ -51,7 +54,10 @@ function generateEmptyGrid(cols, rows) {
   for (let y = 0; y < rows; y++) {
     newGrid.push([]);
     for (let x = 0; x < cols; x++) {
-      newGrid[y].push(0);
+      newGrid[y].push({
+        isGlass: true,
+        revealed: false,
+      });
     }
   }
   return newGrid;
@@ -60,8 +66,17 @@ function generateEmptyGrid(cols, rows) {
 function displayGrid(rows, cols) {
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      if (grid[x][y] === 0) {
-        fill("white");
+      if (x === 0) {
+        image(startFinishLine, x * cellSize, y * cellSize, cellSize, cellSize);
+      }
+      else if(x === cols-1){
+        image(startFinishLine, x * cellSize, y * cellSize, cellSize, cellSize);
+      }
+      else if(!grid[x][y].revealed){
+        image(glass, x * cellSize, y * cellSize, cellSize, cellSize);
+      }
+      else{
+        fill("black");
         square(x * cellSize, y * cellSize, cellSize);
       }
     }
