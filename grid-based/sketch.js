@@ -39,7 +39,6 @@ function mousePressed() {
   //self
   toggleTile(x, y);
 }
-
 function toggleTile(x, y) {
   //make sure the tile you're toggling is in the grid
   if (x >= 0 && x < cols && y >= 0 && y < rows) {
@@ -51,11 +50,11 @@ function toggleTile(x, y) {
 
 function generateEmptyGrid(cols, rows) {
   let newGrid = [];
-  for (let y = 0; y < rows; y++) {
+  for (let x = 0; x < cols; x++) {
     newGrid.push([]);
-    for (let x = 0; x < cols; x++) {
-      newGrid[y].push({
-        isGlass: true,
+    for (let y = 0; y < rows; y++) {
+      newGrid[x].push({
+        isSafe: x === 0 || x === cols-1,
         revealed: false,
       });
     }
@@ -69,13 +68,13 @@ function displayGrid(rows, cols) {
       if (x === 0) {
         image(startFinishLine, x * cellSize, y * cellSize, cellSize, cellSize);
       }
-      else if(x === cols-1){
+      else if (x === cols - 1) {
         image(startFinishLine, x * cellSize, y * cellSize, cellSize, cellSize);
       }
-      else if(!grid[x][y].revealed){
+      else if (!grid[x][y].revealed) {
         image(glass, x * cellSize, y * cellSize, cellSize, cellSize);
       }
-      else{
+      else {
         fill("black");
         square(x * cellSize, y * cellSize, cellSize);
       }
@@ -84,10 +83,26 @@ function displayGrid(rows, cols) {
 }
 
 function chooseCorrectPath(rows, cols) {
-
+  let currentY = Math.floor(random(rows));
+  let currentX = 0;
+  while (currentX < cols - 1) {
+    grid[currentX][currentY].isSafe = true;
+    let move = Math.floor(random(3));
+    if (move === 0) {
+      currentX++;
+    }
+    else if (move === 1 && currentY > 0) {
+      currentY--;
+    }
+    else if (move === 2 && currentY < rows - 1) {
+      currentY++;
+    }
+  }
+  
 }
 
-function checkCellSize(cellSizeWidth, cellSizeHeight){
+
+function checkCellSize(cellSizeWidth, cellSizeHeight) {
   if (cellSizeWidth < cellSizeHeight) {
     cellSize = cellSizeWidth;
   }
@@ -99,10 +114,10 @@ function checkCellSize(cellSizeWidth, cellSizeHeight){
 function displayEasy() {
   let rows = 4;
   let cols = 6;
-  let cellSizeWidth = width/cols;
-  let cellSizeHeight = height/rows;
+  let cellSizeWidth = width / cols;
+  let cellSizeHeight = height / rows;
   checkCellSize(cellSizeWidth, cellSizeHeight);
-  
+
   grid = generateEmptyGrid(rows, cols + 2);
   chooseCorrectPath(rows, cols);
   displayGrid(rows, cols);
@@ -111,11 +126,11 @@ function displayEasy() {
 function displayMedium() {
   let rows = 5;
   let cols = 10;
-  cellSize = width/cols;
-  let cellSizeWidth = width/cols;
-  let cellSizeHeight = height/rows;
+  cellSize = width / cols;
+  let cellSizeWidth = width / cols;
+  let cellSizeHeight = height / rows;
   checkCellSize(cellSizeWidth, cellSizeHeight);
-  grid = generateEmptyGrid(rows, cols+2);
+  grid = generateEmptyGrid(rows, cols + 2);
   chooseCorrectPath(rows, cols);
   displayGrid(rows, cols);
 }
@@ -123,11 +138,11 @@ function displayMedium() {
 function displayHard() {
   let rows = 7;
   let cols = 15;
-  cellSize = width/cols;
-  let cellSizeWidth = width/cols;
-  let cellSizeHeight = height/rows;
+  cellSize = width / cols;
+  let cellSizeWidth = width / cols;
+  let cellSizeHeight = height / rows;
   checkCellSize(cellSizeWidth, cellSizeHeight);
-  grid = generateEmptyGrid(rows, cols+2);
+  grid = generateEmptyGrid(rows, cols + 2);
   chooseCorrectPath(rows, cols);
   displayGrid(rows, cols);
 }
@@ -202,4 +217,3 @@ function displayMenu() {
     state = "hard";
   }
 }
-
