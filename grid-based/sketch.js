@@ -86,7 +86,7 @@ function chooseCorrectPath(rows, cols) {
   let currentY = Math.floor(random(rows));
   let currentX = 0;
   while (currentX < cols - 1) {
-    grid[currentX][currentY].isSafe = true;
+    grid[currentY][currentX].isSafe = true;
     let move = Math.floor(random(3));
     if (move === 0) {
       currentX++;
