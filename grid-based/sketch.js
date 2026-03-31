@@ -50,11 +50,11 @@ function toggleTile(x, y) {
 
 function generateEmptyGrid(cols, rows) {
   let newGrid = [];
-  for (let x = 0; x < cols; x++) {
+  for (let y = 0; y < rows; y++) {
     newGrid.push([]);
-    for (let y = 0; y < rows; y++) {
-      newGrid[x].push({
-        isSafe: x === 0 || x === cols-1,
+    for (let x = 0; x < cols; x++) {
+      newGrid[y].push({
+        isSafe: false,
         revealed: false,
       });
     }
@@ -86,7 +86,7 @@ function chooseCorrectPath(rows, cols) {
   let currentY = Math.floor(random(rows));
   let currentX = 0;
   while (currentX < cols - 1) {
-    grid[currentY][currentX].isSafe = true;
+    grid[currentX][currentY].isSafe = true;
     let move = Math.floor(random(3));
     if (move === 0) {
       currentX++;
@@ -98,7 +98,10 @@ function chooseCorrectPath(rows, cols) {
       currentY++;
     }
   }
-  
+  for (let i = 0; i < rows; i++){
+    grid[i][0].isSafe = true;
+    grid[i][cols-1].isSafe = true;
+  }
 }
 
 
@@ -118,7 +121,7 @@ function displayEasy() {
   let cellSizeHeight = height / rows;
   checkCellSize(cellSizeWidth, cellSizeHeight);
 
-  grid = generateEmptyGrid(rows, cols + 2);
+  grid = generateEmptyGrid(rows, cols );
   chooseCorrectPath(rows, cols);
   displayGrid(rows, cols);
 }
