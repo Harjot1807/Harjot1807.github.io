@@ -29,7 +29,16 @@ function draw() {
 }
 
 function revealAll() {
-
+  let timer = millis();
+  if (millis()>millis()+timer) {
+    for (let x = 0; x < cols; x++){
+      for (let y = 0; y<rows; y++){
+        if (grid[y][x].isSafe){
+          
+        }
+      }
+    }
+  }
 }
 
 function mousePressed() {
@@ -100,7 +109,7 @@ function chooseCorrectPath(rows, cols) {
   }
   for (let i = 0; i < rows; i++){
     grid[i][0].isSafe = true;
-    grid[i][cols-1].isSafe = true;
+    grid[i][rows-1].isSafe = true;
   }
 }
 
