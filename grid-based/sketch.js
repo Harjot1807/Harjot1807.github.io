@@ -12,6 +12,7 @@ let grid;
 let state = "menu";
 let startFinishLine;
 let glass;
+let time;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -28,13 +29,20 @@ function draw() {
   whichDisplay();
 }
 
+
+
 function revealAll() {
-  let timer = millis();
-  if (millis()>millis()+timer) {
-    for (let x = 0; x < cols; x++){
-      for (let y = 0; y<rows; y++){
-        if (grid[y][x].isSafe){
-          
+  let timer = 5000;
+  if (!state === "menu") {
+    for (let x = 0; x > grid.length; x++) {
+      for (let y = 0; y < grid[x].length; y++) {
+        grid[x][y].revealed = true;
+      }
+    }
+    if (millis() > time + timer) {
+      for (let x = 0; x > grid.length; x++) {
+        for (let y = 0; y < grid[x].length; y++) {
+          grid[x][y].revealed = true;
         }
       }
     }
@@ -107,9 +115,9 @@ function chooseCorrectPath(rows, cols) {
       currentY++;
     }
   }
-  for (let i = 0; i < rows; i++){
+  for (let i = 0; i < rows; i++) {
     grid[i][0].isSafe = true;
-    grid[i][rows-1].isSafe = true;
+    grid[i][rows - 1].isSafe = true;
   }
 }
 
@@ -130,7 +138,7 @@ function displayEasy() {
   let cellSizeHeight = height / rows;
   checkCellSize(cellSizeWidth, cellSizeHeight);
 
-  grid = generateEmptyGrid(rows, cols );
+  grid = generateEmptyGrid(rows, cols);
   chooseCorrectPath(rows, cols);
   displayGrid(rows, cols);
 }
@@ -197,6 +205,7 @@ function displayMenu() {
     mouseX < width * 3 / 4 &&
     mouseY < height / 3) {
     state = "easy";
+    time = millis();
   }
 
   //making the medium mode box and giving it text
@@ -212,6 +221,7 @@ function displayMenu() {
     mouseX < width * 3 / 4 &&
     mouseY < height * 5 / 8) {
     state = "medium";
+    time = millis();
   }
 
   //making the hard mode box and giving it text
@@ -227,5 +237,6 @@ function displayMenu() {
     mouseX < width * 3 / 4 &&
     mouseY < height * 11 / 12) {
     state = "hard";
+    time = millis();
   }
 }
