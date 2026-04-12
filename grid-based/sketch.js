@@ -27,22 +27,27 @@ function preload() {
 function draw() {
   background(220);
   whichDisplay();
+  revealAll();
 }
 
 
 
 function revealAll() {
-  let timer = 5000;
-  if (!state === "menu") {
-    for (let x = 0; x > grid.length; x++) {
-      for (let y = 0; y < grid[x].length; y++) {
-        grid[x][y].revealed = true;
+  let timer = 3000;
+  if (state !== "menu") {
+    if (millis() < time + timer) {
+      for (let x = 0; x < cols; x++) {
+        for (let y = 0; y < rows; y++) {
+          grid[x][y].revealed = true;
+        }
       }
     }
-    if (millis() > time + timer) {
-      for (let x = 0; x > grid.length; x++) {
-        for (let y = 0; y < grid[x].length; y++) {
-          grid[x][y].revealed = true;
+    else{
+      for (let x = 0; x < cols; x++) {
+        for (let y = 0; y < rows; y++) {
+          if (millis() < time + timer + 50){
+            grid[x][y].revealed = false;
+          }
         }
       }
     }
@@ -56,21 +61,24 @@ function mousePressed() {
   //self
   toggleTile(x, y);
 }
+
 function toggleTile(x, y) {
   //make sure the tile you're toggling is in the grid
   if (x >= 0 && x < cols && y >= 0 && y < rows) {
-    if (grid[x][y].revealed === false) {
-      grid[x][y].revealed = true;
+    grid[x][y].revealed = true;
+
+    if (!grid[x][y].isSafe) {
+      state = "menu";
     }
   }
 }
 
-function generateEmptyGrid(cols, rows) {
+function generateEmptyGrid(levelCols, levelRows) {
   let newGrid = [];
-  for (let y = 0; y < rows; y++) {
+  for (let x = 0; x < levelCols; x++) {
     newGrid.push([]);
-    for (let x = 0; x < cols; x++) {
-      newGrid[y].push({
+    for (let y = 0; y < levelRows; y++) {
+      newGrid[x].push({
         isSafe: false,
         revealed: false,
       });
@@ -80,19 +88,21 @@ function generateEmptyGrid(cols, rows) {
 }
 
 function displayGrid(rows, cols) {
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      if (x === 0) {
-        image(startFinishLine, x * cellSize, y * cellSize, cellSize, cellSize);
-      }
-      else if (x === cols - 1) {
+  for (let x = 0; x < cols; x++) {
+    for (let y = 0; y < rows; y++) {
+      if (x === 0 || x === cols-1) {
         image(startFinishLine, x * cellSize, y * cellSize, cellSize, cellSize);
       }
       else if (!grid[x][y].revealed) {
         image(glass, x * cellSize, y * cellSize, cellSize, cellSize);
       }
       else {
-        fill("black");
+        if (grid[x][y].isSafe){
+          fill("white")
+        }
+        else{
+          fill("black");
+        }
         square(x * cellSize, y * cellSize, cellSize);
       }
     }
@@ -102,7 +112,8 @@ function displayGrid(rows, cols) {
 function chooseCorrectPath(rows, cols) {
   let currentY = Math.floor(random(rows));
   let currentX = 0;
-  while (currentX < cols - 1) {
+
+  while (currentX < cols) {
     grid[currentX][currentY].isSafe = true;
     let move = Math.floor(random(3));
     if (move === 0) {
@@ -114,10 +125,6 @@ function chooseCorrectPath(rows, cols) {
     else if (move === 2 && currentY < rows - 1) {
       currentY++;
     }
-  }
-  for (let i = 0; i < rows; i++) {
-    grid[i][0].isSafe = true;
-    grid[i][rows - 1].isSafe = true;
   }
 }
 
@@ -132,39 +139,15 @@ function checkCellSize(cellSizeWidth, cellSizeHeight) {
 }
 
 function displayEasy() {
-  let rows = 4;
-  let cols = 6;
-  let cellSizeWidth = width / cols;
-  let cellSizeHeight = height / rows;
-  checkCellSize(cellSizeWidth, cellSizeHeight);
-
-  grid = generateEmptyGrid(rows, cols);
-  chooseCorrectPath(rows, cols);
-  displayGrid(rows, cols);
+  displayGrid(4, 6);
 }
 
 function displayMedium() {
-  let rows = 5;
-  let cols = 10;
-  cellSize = width / cols;
-  let cellSizeWidth = width / cols;
-  let cellSizeHeight = height / rows;
-  checkCellSize(cellSizeWidth, cellSizeHeight);
-  grid = generateEmptyGrid(rows, cols + 2);
-  chooseCorrectPath(rows, cols);
-  displayGrid(rows, cols);
+  displayGrid(5, 10);
 }
 
 function displayHard() {
-  let rows = 7;
-  let cols = 15;
-  cellSize = width / cols;
-  let cellSizeWidth = width / cols;
-  let cellSizeHeight = height / rows;
-  checkCellSize(cellSizeWidth, cellSizeHeight);
-  grid = generateEmptyGrid(rows, cols + 2);
-  chooseCorrectPath(rows, cols);
-  displayGrid(rows, cols);
+  displayGrid(7, 15);
 }
 
 
@@ -187,13 +170,10 @@ function whichDisplay() {
 
 function displayMenu() {
 
-  // resetting the feedback everytime we go to the menu we don't show this tho
-  feedback = "Type a number and press ENTER";
-
   //making a box with the text easy
   fill(255);
   rect(width / 4, height / 12, width / 2, height / 4);
-  textSize((height + width) / 20);
+  textSize((height + width) / 40);
   textAlign(CENTER, CENTER);
   fill(0);
   text("Easy", width / 2, height * 5 / 24);
@@ -204,8 +184,9 @@ function displayMenu() {
     mouseY > height / 12 &&
     mouseX < width * 3 / 4 &&
     mouseY < height / 3) {
-    state = "easy";
-    time = millis();
+    rows = 4;
+    cols = 6;
+    setupLevel("easy")
   }
 
   //making the medium mode box and giving it text
@@ -220,8 +201,9 @@ function displayMenu() {
     mouseY > height * 9 / 24 &&
     mouseX < width * 3 / 4 &&
     mouseY < height * 5 / 8) {
-    state = "medium";
-    time = millis();
+    rows = 5;
+    cols = 10;
+    setupLevel("medium");
   }
 
   //making the hard mode box and giving it text
@@ -236,7 +218,16 @@ function displayMenu() {
     mouseY > height * 2 / 3 &&
     mouseX < width * 3 / 4 &&
     mouseY < height * 11 / 12) {
-    state = "hard";
-    time = millis();
+    rows = 7;
+    cols = 15;
+    setupLevel("hard");
   }
+}
+
+function setupLevel(difficulty){
+  state = difficulty;
+  time = millis();
+  checkCellSize(width/cols, height/rows);
+  grid = generateEmptyGrid(cols, rows);
+  chooseCorrectPath(rows, cols);
 }
