@@ -13,6 +13,7 @@ let state = "menu";
 let startFinishLine;
 let glass;
 let time;
+let gameOn = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -42,10 +43,10 @@ function revealAll() {
         }
       }
     }
-    else{
+    else {
       for (let x = 0; x < cols; x++) {
         for (let y = 0; y < rows; y++) {
-          if (millis() < time + timer + 50){
+          if (millis() < time + timer + 50) {
             grid[x][y].revealed = false;
           }
         }
@@ -68,6 +69,7 @@ function toggleTile(x, y) {
     grid[x][y].revealed = true;
 
     if (!grid[x][y].isSafe) {
+      gameOn = false;
       state = "menu";
     }
   }
@@ -90,17 +92,17 @@ function generateEmptyGrid(levelCols, levelRows) {
 function displayGrid(rows, cols) {
   for (let x = 0; x < cols; x++) {
     for (let y = 0; y < rows; y++) {
-      if (x === 0 || x === cols-1) {
+      if (x === 0 || x === cols - 1) {
         image(startFinishLine, x * cellSize, y * cellSize, cellSize, cellSize);
       }
       else if (!grid[x][y].revealed) {
         image(glass, x * cellSize, y * cellSize, cellSize, cellSize);
       }
       else {
-        if (grid[x][y].isSafe){
-          fill("white")
+        if (grid[x][y].isSafe) {
+          fill("white");
         }
-        else{
+        else {
           fill("black");
         }
         square(x * cellSize, y * cellSize, cellSize);
@@ -157,13 +159,13 @@ function whichDisplay() {
   if (state === "menu") {
     displayMenu();
   }
-  if (state === "easy") {
+  else if (state === "easy" && gameOn === true) {
     displayEasy();
   }
-  if (state === "medium") {
+  else if (state === "medium" && gameOn === true) {
     displayMedium();
   }
-  if (state === "hard") {
+  else if (state === "hard" && gameOn === true) {
     displayHard();
   }
 }
@@ -183,10 +185,12 @@ function displayMenu() {
     mouseX > width / 4 &&
     mouseY > height / 12 &&
     mouseX < width * 3 / 4 &&
-    mouseY < height / 3) {
+    mouseY < height / 3 &&
+    gameOn === false) {
     rows = 4;
     cols = 6;
-    setupLevel("easy")
+    gameOn = true;
+    setupLevel("easy");
   }
 
   //making the medium mode box and giving it text
@@ -200,9 +204,11 @@ function displayMenu() {
     mouseX > width / 4 &&
     mouseY > height * 9 / 24 &&
     mouseX < width * 3 / 4 &&
-    mouseY < height * 5 / 8) {
+    mouseY < height * 5 / 8 &&
+    gameOn === false) {
     rows = 5;
     cols = 10;
+    gameOn = true;
     setupLevel("medium");
   }
 
@@ -217,17 +223,21 @@ function displayMenu() {
     mouseX > width / 4 &&
     mouseY > height * 2 / 3 &&
     mouseX < width * 3 / 4 &&
-    mouseY < height * 11 / 12) {
+    mouseY < height * 11 / 12 &&
+    gameOn === false) {
     rows = 7;
     cols = 15;
+    gameOn = true;
     setupLevel("hard");
   }
 }
 
-function setupLevel(difficulty){
-  state = difficulty;
-  time = millis();
-  checkCellSize(width/cols, height/rows);
-  grid = generateEmptyGrid(cols, rows);
-  chooseCorrectPath(rows, cols);
+function setupLevel(difficulty) {
+  if (gameOn){
+    state = difficulty;
+    time = millis();
+    checkCellSize(width / cols, height / rows);
+    grid = generateEmptyGrid(cols, rows);
+    chooseCorrectPath(rows, cols);
+  }
 }
