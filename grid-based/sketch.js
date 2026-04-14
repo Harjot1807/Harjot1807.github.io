@@ -14,6 +14,7 @@ let startFinishLine;
 let glass;
 let time;
 let gameOn = false;
+let player;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -22,6 +23,7 @@ function setup() {
 function preload() {
   startFinishLine = loadImage("line.png");
   glass = loadImage("Transparent.png");
+  player = loadImage("player.png");
 }
 
 
@@ -83,6 +85,7 @@ function generateEmptyGrid(levelCols, levelRows) {
       newGrid[x].push({
         isSafe: false,
         revealed: false,
+        isPlayer: false,
       });
     }
   }
@@ -92,7 +95,10 @@ function generateEmptyGrid(levelCols, levelRows) {
 function displayGrid(rows, cols) {
   for (let x = 0; x < cols; x++) {
     for (let y = 0; y < rows; y++) {
-      if (x === 0 || x === cols - 1) {
+      if (grid[x][y].isPlayer){
+        image(player, x * cellSize, y * cellSize, cellSize, cellSize);
+      }
+      else if (x === 0 || x === cols - 1) {
         image(startFinishLine, x * cellSize, y * cellSize, cellSize, cellSize);
       }
       else if (!grid[x][y].revealed) {
@@ -235,6 +241,7 @@ function displayMenu() {
 function setupLevel(difficulty) {
   if (gameOn){
     state = difficulty;
+    grid[floor(width/2)][floor(height/2)].isPlayer = true;
     time = millis();
     checkCellSize(width / cols, height / rows);
     grid = generateEmptyGrid(cols, rows);

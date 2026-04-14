@@ -11,6 +11,7 @@
 -[Rect Grid](r-grid)
 -[game of life](gamelife)
 -[Character in Grid](character)
+-[Walker OOP Demo](walker)
 
 ## Assignments
 - [Interactive Scene](interactive-scene)
