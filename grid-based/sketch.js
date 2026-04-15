@@ -15,6 +15,10 @@ let glass;
 let time;
 let gameOn = false;
 let player;
+let playerX;
+let playerY;
+let startY;
+let rTimer = 3000;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -37,7 +41,7 @@ function draw() {
 
 function revealAll() {
   let timer = 3000;
-  if (state !== "menu") {
+  if (state !== "menu" && grid) {
     if (millis() < time + timer) {
       for (let x = 0; x < cols; x++) {
         for (let y = 0; y < rows; y++) {
@@ -48,7 +52,7 @@ function revealAll() {
     else {
       for (let x = 0; x < cols; x++) {
         for (let y = 0; y < rows; y++) {
-          if (millis() < time + timer + 50) {
+          if (!grid[x][y].isPlayer) {
             grid[x][y].revealed = false;
           }
         }
@@ -57,22 +61,104 @@ function revealAll() {
   }
 }
 
-function mousePressed() {
-  let x = Math.floor(mouseX / cellSize);
-  let y = Math.floor(mouseY / cellSize);
+function keyPressed(){
+  if (gameOn && millis() > time + rTimer) {
+    let positionAfterX = playerX;
+    let positionAfterY = playerY;
 
-  //self
-  toggleTile(x, y);
+    if (key === "w"){
+      nextY--;
+    }
+    if (key === "a"){
+      nextX--;
+    }
+    if (key === "s"){
+      nextY++;
+    }
+    if (key === "d"){
+      nextX++;
+    }
+
+    toggleTile(nextX, nextY);
+  }
+}
+
+function mousePressed() {
+  if (state === "menu"){    
+
+    //making it change state into easy if the easy box is pressed
+    if ( mouseX > width / 4 &&
+      mouseY > height / 12 &&
+      mouseX < width * 3 / 4 &&
+      mouseY < height / 3 &&
+      gameOn === false) {
+      rows = 4;
+      cols = 6;
+      gameOn = true;
+      setupLevel("easy");
+    }
+
+    if (mouseX > width / 4 &&
+    mouseY > height * 9 / 24 &&
+    mouseX < width * 3 / 4 &&
+    mouseY < height * 5 / 8 &&
+    gameOn === false) {
+    rows = 5;
+    cols = 10;
+    gameOn = true;
+    setupLevel("medium");
+    }
+
+    // making it change state into hard if the hard box is pressed
+    if (mouseX > width / 4 &&
+      mouseY > height * 2 / 3 &&
+      mouseX < width * 3 / 4 &&
+      mouseY < height * 11 / 12 &&
+      gameOn === false) {
+      rows = 7;
+      cols = 15;
+      gameOn = true;
+      setupLevel("hard");
+    }
+
+  }
+  else if (gameOn && millis() > time + rTimer){
+    let x = Math.floor(mouseX / cellSize);
+    let y = Math.floor(mouseY / cellSize);
+      //self
+    toggleTile(x, y);
+  }
+  
+
 }
 
 function toggleTile(x, y) {
+
+  if (millis() > time + rTimer) {
   //make sure the tile you're toggling is in the grid
   if (x >= 0 && x < cols && y >= 0 && y < rows) {
     grid[x][y].revealed = true;
 
-    if (!grid[x][y].isSafe) {
-      gameOn = false;
-      state = "menu";
+    let isAdjacent = (abs(x-playerX) <= 1 && abs(y-playerY) <= 1);
+
+    if (isAdjacent){
+      grid[playerX][playerY].isPlayer = false;
+      playerX = x;
+      playerY = y;
+      grid[playerX][playerY].isPlayer = true;
+
+      grid[x][y].revealed = true;
+    
+      if (!grid[x][y].isSafe) {
+        gameOn = false;
+        state = "menu";
+      }
+
+      else if (x === cols-1) {
+        alert("You Win!");
+        gameOn = false;
+        state = "menu";
+      }
     }
   }
 }
@@ -88,6 +174,7 @@ function generateEmptyGrid(levelCols, levelRows) {
         isPlayer: false,
       });
     }
+   }
   }
   return newGrid;
 }
@@ -120,6 +207,8 @@ function displayGrid(rows, cols) {
 function chooseCorrectPath(rows, cols) {
   let currentY = Math.floor(random(rows));
   let currentX = 0;
+
+  startY = currentY;
 
   while (currentX < cols) {
     grid[currentX][currentY].isSafe = true;
@@ -186,18 +275,6 @@ function displayMenu() {
   fill(0);
   text("Easy", width / 2, height * 5 / 24);
 
-  //making it change state into easy if the easy box is pressed
-  if (mouseIsPressed &&
-    mouseX > width / 4 &&
-    mouseY > height / 12 &&
-    mouseX < width * 3 / 4 &&
-    mouseY < height / 3 &&
-    gameOn === false) {
-    rows = 4;
-    cols = 6;
-    gameOn = true;
-    setupLevel("easy");
-  }
 
   //making the medium mode box and giving it text
   fill(255);
@@ -206,17 +283,7 @@ function displayMenu() {
   text("Medium", width / 2, height / 2);
 
   // making it change state into medium if the medium box is pressed
-  if (mouseIsPressed &&
-    mouseX > width / 4 &&
-    mouseY > height * 9 / 24 &&
-    mouseX < width * 3 / 4 &&
-    mouseY < height * 5 / 8 &&
-    gameOn === false) {
-    rows = 5;
-    cols = 10;
-    gameOn = true;
-    setupLevel("medium");
-  }
+
 
   //making the hard mode box and giving it text
   fill(255);
@@ -224,27 +291,20 @@ function displayMenu() {
   fill(0);
   text("Hard", width / 2, height * 19 / 24);
 
-  // making it change state into hard if the hard box is pressed
-  if (mouseIsPressed &&
-    mouseX > width / 4 &&
-    mouseY > height * 2 / 3 &&
-    mouseX < width * 3 / 4 &&
-    mouseY < height * 11 / 12 &&
-    gameOn === false) {
-    rows = 7;
-    cols = 15;
-    gameOn = true;
-    setupLevel("hard");
-  }
+
 }
 
 function setupLevel(difficulty) {
   if (gameOn){
     state = difficulty;
-    grid[floor(width/2)][floor(height/2)].isPlayer = true;
     time = millis();
     checkCellSize(width / cols, height / rows);
+    
     grid = generateEmptyGrid(cols, rows);
     chooseCorrectPath(rows, cols);
+
+    playerX = 0;
+    playerY = startY;
+    grid[playerX][playerY].isPlayer = true;
   }
 }
