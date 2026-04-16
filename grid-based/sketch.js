@@ -229,18 +229,26 @@ function displayGrid(rows, cols) {
     for (let x = 0; x < cols; x++) {
       for (let y = 0; y < rows; y++) {
 
+        //checks and makes the border
         let displayingX = x*cellSize + xBorder;
         let displayingY = y*cellSize + yBorder;
 
+        //displays the player
         if (grid[x][y].isPlayer){
           image(player, displayingX, displayingY, cellSize, cellSize);
         }
+
+        //displays the start and end
         else if (x === 0 || x === cols - 1) {
           image(startFinishLine, displayingX, displayingY, cellSize, cellSize);
         }
+
+        //displays the glass
         else if (!grid[x][y].revealed) {
           image(glass, displayingX, displayingY, cellSize, cellSize);
         }
+
+        //shows the one opened and not safe at the start
         else {
           if (grid[x][y].isSafe) {
             fill("white");
@@ -255,80 +263,106 @@ function displayGrid(rows, cols) {
  }
 }
 
+//randomly chooses the correct path
 function chooseCorrectPath(rows, cols) {
 
+  //makes the start and end column safe
   for (let i = 0; i < rows; i += 1){
     grid[0][i].isSafe = true;
     grid[cols-1][i].isSafe = true;
   }
 
+  //starts from the first column
   let currentY = Math.floor(random(rows));
   let currentX = 0;
 
+  //chooses the random Y value and starst from there
   startY = currentY;
-
   while (currentX < cols) {
+
+    //chooses a random number - 3 options
     grid[currentX][currentY].isSafe = true;
     let move = Math.floor(random(3));
+
+    //if it is 0- goes straight and makes it safe
     if (move === 0) {
       currentX++;
     }
+
+    //if it is 1- goes up and makes it safe, it also checks if it is in the grid
     else if (move === 1 && currentY > 0) {
       currentY--;
     }
+
+    //if it is 2- goes down and makes it safe, it also checks if it is in the grid
     else if (move === 2 && currentY < rows - 1) {
       currentY++;
     }
   }
 }
 
-
+//makes the cellsize so it is perfectly centered
 function checkCellSize(cellSizeWidth, cellSizeHeight) {
 
+  //sets the maximum height and width ensuring border
   let maxWidth = (width * 0.9) / cols;
   let maxHeight = (height * 0.9) / rows;
 
+  // if the height is bigger
   if (maxWidth < maxHeight) {
     cellSize = maxWidth;
   }
+
+  //if the width is bigger
   else {
     cellSize = maxHeight;
   }
-
+ 
+  //sets the border perfectly
   xBorder = (width - (cols * cellSize)) / 2;
   yBorder = (height - (rows * cellSize)) / 2;
 }
 
+//displays the easy function if they choose that
 function displayEasy() {
   displayGrid(4, 10);
 }
 
+//displays the medium function if they choose that
 function displayMedium() {
   displayGrid(7, 15);
 }
 
+//displays the hard function if they choose that
 function displayHard() {
   displayGrid(11, 22);
 }
 
-
+  //changes the state to the exact menu
 function whichDisplay() {
 
-  //changes the state to the exact menu
+  //if state is menu
   if (state === "menu") {
     displayMenu();
   }
+
+  //if tehe state is easy
   else if (state === "easy" && gameOn === true) {
     displayEasy();
   }
+
+  //if the state is medium
   else if (state === "medium" && gameOn === true) {
     displayMedium();
   }
+
+  //if the state is hard
   else if (state === "hard" && gameOn === true) {
     displayHard();
   }
 }
 
+//if the state is menu, displays it
 function displayMenu() {
 
   //making a box with the text easy
@@ -352,20 +386,25 @@ function displayMenu() {
   rect(width / 4, height * 16 / 24, width / 2, height / 4);
   fill(0);
   text("Hard", width / 2, height * 19 / 24);
-
-
 }
 
+
+//function that calls in every function
 function setupLevel(difficulty) {
+
+  //while the game is on
   if (gameOn){
+
+    //sets the difficulyy and time
     state = difficulty;
     time = millis();
 
-    checkCellSize();
-    
+    //calls the previous functions required for the program to work
+    checkCellSize();  
     grid = generateEmptyGrid(cols, rows);
     chooseCorrectPath(rows, cols);
 
+    //starts the player and turns on the player there and makes it revealed
     playerX = 0;
     playerY = startY;
     grid[playerX][playerY].isPlayer = true;
