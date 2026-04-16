@@ -74,7 +74,7 @@ function revealAll() {
 
 
 //moves the player if you press wasd
-function keyPressed(){
+function keyPressed() {
 
   //you can only change the player position after the first 3 seconds
   if (gameOn && millis() > time + rTimer) {
@@ -82,22 +82,22 @@ function keyPressed(){
     let positionAfterY = playerY;
 
     //moves up
-    if (key === "w"){
+    if (key === "w") {
       positionAfterY--;
     }
 
     //moves left
-    if (key === "a"){
+    if (key === "a") {
       positionAfterX--;
     }
 
     //moves down
-    if (key === "s"){
+    if (key === "s") {
       positionAfterY++;
     }
 
     //moves right
-    if (key === "d"){
+    if (key === "d") {
       positionAfterX++;
     }
 
@@ -108,10 +108,10 @@ function keyPressed(){
 
 //function that allows the user to choose the mode and ouse if they dont want to use the keyboard
 function mousePressed() {
-  if (state === "menu"){    
+  if (state === "menu") {
 
     //making it change state into easy if the easy box is pressed
-    if ( mouseX > width / 4 &&
+    if (mouseX > width / 4 &&
       mouseY > height / 12 &&
       mouseX < width * 3 / 4 &&
       mouseY < height / 3 &&
@@ -124,14 +124,14 @@ function mousePressed() {
 
     //making ti change state inyo medium if the medium box is pressed
     if (mouseX > width / 4 &&
-    mouseY > height * 9 / 24 &&
-    mouseX < width * 3 / 4 &&
-    mouseY < height * 5 / 8 &&
-    gameOn === false) {
-    rows = 7;
-    cols = 15;
-    gameOn = true;
-    setupLevel("medium");
+      mouseY > height * 9 / 24 &&
+      mouseX < width * 3 / 4 &&
+      mouseY < height * 5 / 8 &&
+      gameOn === false) {
+      rows = 7;
+      cols = 15;
+      gameOn = true;
+      setupLevel("medium");
     }
 
     // making it change state into hard if the hard box is pressed
@@ -149,19 +149,19 @@ function mousePressed() {
   }
 
   //allows the user to use mouse if they dont want to use the keyboard
-  else if (gameOn && millis() > time + rTimer){
+  else if (gameOn && millis() > time + rTimer) {
     let x = Math.floor((mouseX - xBorder) / cellSize);
     let y = Math.floor((mouseY - yBorder) / cellSize);
-      //self
+    //self
     toggleTile(x, y);
   }
-  
+
 
 }
 
 //main logic of the code, checks the new cell is safe or not
 function toggleTile(x, y) {
- 
+
   // makes sure that the first 3 seconds are up
   if (millis() > time + rTimer) {
 
@@ -170,10 +170,10 @@ function toggleTile(x, y) {
       grid[x][y].revealed = true;
 
       //makes sure that the new square is within the direct vicinity of the user
-      let isAdjacent = (abs(x-playerX) <= 1 && abs(y-playerY) <= 1);
+      let isAdjacent = abs(x - playerX) <= 1 && abs(y - playerY) <= 1;
 
       //if it is directly in the vicinity
-      if (isAdjacent){
+      if (isAdjacent) {
 
         //turns off the old player and the puts the player into the new cell
         grid[playerX][playerY].isPlayer = false;
@@ -181,7 +181,7 @@ function toggleTile(x, y) {
         playerY = y;
         grid[playerX][playerY].isPlayer = true;
         grid[x][y].revealed = true;
-      
+
         //if the new cell is not safe, tells the user they lost and retuens them to the menu
         if (!grid[x][y].isSafe) {
           alert("You lost!");
@@ -190,7 +190,7 @@ function toggleTile(x, y) {
         }
 
         //if the user reaches the last column tells them they win
-        else if (x === cols-1) {
+        else if (x === cols - 1) {
           alert("You Win!");
           gameOn = false;
           state = "menu";
@@ -214,7 +214,7 @@ function generateEmptyGrid(levelCols, levelRows) {
         isPlayer: false,
       });
     }
-   }  
+  }
   return newGrid;
 }
 
@@ -230,11 +230,11 @@ function displayGrid(rows, cols) {
       for (let y = 0; y < rows; y++) {
 
         //checks and makes the border
-        let displayingX = x*cellSize + xBorder;
-        let displayingY = y*cellSize + yBorder;
+        let displayingX = x * cellSize + xBorder;
+        let displayingY = y * cellSize + yBorder;
 
         //displays the player
-        if (grid[x][y].isPlayer){
+        if (grid[x][y].isPlayer) {
           image(player, displayingX, displayingY, cellSize, cellSize);
         }
 
@@ -258,18 +258,18 @@ function displayGrid(rows, cols) {
           }
           square(displayingX, displayingY, cellSize);
         }
-     }
-   } 
- }
+      }
+    }
+  }
 }
 
 //randomly chooses the correct path
 function chooseCorrectPath(rows, cols) {
 
   //makes the start and end column safe
-  for (let i = 0; i < rows; i += 1){
+  for (let i = 0; i < rows; i += 1) {
     grid[0][i].isSafe = true;
-    grid[cols-1][i].isSafe = true;
+    grid[cols - 1][i].isSafe = true;
   }
 
   //starts from the first column
@@ -305,8 +305,8 @@ function chooseCorrectPath(rows, cols) {
 function checkCellSize(cellSizeWidth, cellSizeHeight) {
 
   //sets the maximum height and width ensuring border
-  let maxWidth = (width * 0.9) / cols;
-  let maxHeight = (height * 0.9) / rows;
+  let maxWidth = width * 0.9 / cols;
+  let maxHeight = height * 0.9 / rows;
 
   // if the height is bigger
   if (maxWidth < maxHeight) {
@@ -317,10 +317,10 @@ function checkCellSize(cellSizeWidth, cellSizeHeight) {
   else {
     cellSize = maxHeight;
   }
- 
+
   //sets the border perfectly
-  xBorder = (width - (cols * cellSize)) / 2;
-  yBorder = (height - (rows * cellSize)) / 2;
+  xBorder = (width - cols * cellSize) / 2;
+  yBorder = (height - rows * cellSize) / 2;
 }
 
 //displays the easy function if they choose that
@@ -338,7 +338,7 @@ function displayHard() {
   displayGrid(11, 22);
 }
 
-  //changes the state to the exact menu
+//changes the state to the exact menu
 function whichDisplay() {
 
   //if state is menu
@@ -393,14 +393,14 @@ function displayMenu() {
 function setupLevel(difficulty) {
 
   //while the game is on
-  if (gameOn){
+  if (gameOn) {
 
     //sets the difficulyy and time
     state = difficulty;
     time = millis();
 
     //calls the previous functions required for the program to work
-    checkCellSize();  
+    checkCellSize();
     grid = generateEmptyGrid(cols, rows);
     chooseCorrectPath(rows, cols);
 
