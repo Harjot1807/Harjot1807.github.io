@@ -13,6 +13,7 @@
 -[Character in Grid](character)
 -[Walker OOP Demo](walker)
 -[ball OOP](ball-oop)
+-[Connected nodes](connected)
 
 ## Assignments
 - [Interactive Scene](interactive-scene)
