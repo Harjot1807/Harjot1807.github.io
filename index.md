@@ -14,6 +14,7 @@
 -[Walker OOP Demo](walker)
 -[ball OOP](ball-oop)
 -[Connected nodes](connected)
+-[inheritance](inhe)
 
 ## Assignments
 - [Interactive Scene](interactive-scene)
