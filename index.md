@@ -15,6 +15,7 @@
 -[ball OOP](ball-oop)
 -[Connected nodes](connected)
 -[inheritance](inhe)
+-[Recursive Circles](recursion)
 
 ## Assignments
 - [Interactive Scene](interactive-scene)
