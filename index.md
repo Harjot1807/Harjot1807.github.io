@@ -16,6 +16,7 @@
 -[Connected nodes](connected)
 -[inheritance](inhe)
 -[Recursive Circles](recursion)
+-[triangle](serpenski)
 
 ## Assignments
 - [Interactive Scene](interactive-scene)
